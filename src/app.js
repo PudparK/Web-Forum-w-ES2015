@@ -1,10 +1,5 @@
 import Post from "./post";
-
-let ui = {
-    renderPosts(posts){
-        console.log(posts);
-    }
-};
+import ui from "./ui";
 
 //Didn't have to type in braces on arrow function in catch.
 // then() and catch() need to have a function to run.
