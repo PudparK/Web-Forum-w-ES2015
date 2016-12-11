@@ -1,3 +1,5 @@
+// This is the entry point file. This is where it all happens, but we don't really want to write code here.
+
 import Post from "./post";
 import ui from "./ui";
 
@@ -10,4 +12,4 @@ Post.findAll()
     });
 
 
-// Left off on 22:35
+// Left off on 25:16

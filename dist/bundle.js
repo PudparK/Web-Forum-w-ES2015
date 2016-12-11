@@ -13,11 +13,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //Didn't have to type in braces on arrow function in catch.
 // then() and catch() need to have a function to run.
+// This is the entry point file. This is where it all happens, but we don't really want to write code here.
+
 _post2.default.findAll().then(_ui2.default.renderPosts).catch(function (error) {
     console.log(error);
 });
 
-// Left off on 22:35
+// Left off on 25:16
 
 },{"./post":2,"./ui":3}],2:[function(require,module,exports){
 "use strict";
@@ -55,11 +57,25 @@ exports.default = Post;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+// This is the user interface file. This is where you render stuff to the DOM.
+
 var ui = {
     renderPosts: function renderPosts(posts) {
         console.log(posts);
+        // Creates an array of article posts' in template form.
+        var elements = posts.map(function (post) {
+            return articleTemplate;
+        });
+
+        console.log(elements);
+        // Finds the target, then adds the elements.
+        var target = document.querySelector(".container");
+        target.innerHTML = elements.join("");
     }
 };
+
+// We add the post to the DOM here.
+var articleTemplate = "\n        <article class=\"post\">\n          <h2 class=\"post-title\">\n            In hybrid moments, give me a moment\n          </h2>\n          <p class=\"post-meta\">\n            last reply on July 15, 1997\n          </p>\n        </article>";
 
 exports.default = ui;
 
