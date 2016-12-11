@@ -55,27 +55,35 @@ exports.default = Post;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 // This is the user interface file. This is where you render stuff to the DOM.
 
 var ui = {
-    renderPosts: function renderPosts(posts) {
-        console.log(posts);
-        // Creates an array of article posts' in template form.
-        var elements = posts.map(function (post) {
-            return articleTemplate;
-        });
+  renderPosts: function renderPosts(posts) {
+    console.log(posts);
+    // Creates an array of article posts' in template form.
+    var elements = posts.map(function (post) {
+      var title = post.title,
+          lastReply = post.lastReply;
 
-        console.log(elements);
-        // Finds the target, then adds the elements.
-        var target = document.querySelector(".container");
-        target.innerHTML = elements.join("");
-    }
+      console.log("Destructuring here.");
+      console.log(post);
+      return articleTemplate(title, lastReply);
+    });
+
+    console.log(elements);
+    // Finds the target, then adds the elements.
+    var target = document.querySelector(".container");
+    target.innerHTML = elements.join("");
+  }
 };
 
 // We add the post to the DOM here.
-var articleTemplate = "\n        <article class=\"post\">\n          <h2 class=\"post-title\">\n            In hybrid moments, give me a moment\n          </h2>\n          <p class=\"post-meta\">\n            last reply on July 15, 1997\n          </p>\n        </article>";
+function articleTemplate(title, lastReply) {
+  var template = "\n        <article class=\"post\">\n          <h2 class=\"post-title\">\n            " + title + "\n          </h2>\n          <p class=\"post-meta\">\n            last reply on " + lastReply + "\n          </p>\n        </article>";
+  return template;
+};
 
 exports.default = ui;
 

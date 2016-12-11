@@ -5,7 +5,11 @@ let ui = {
         console.log(posts);
         // Creates an array of article posts' in template form.
         let elements = posts.map( (post) => {
-            return articleTemplate;
+
+          let { title, lastReply } = post;
+          console.log("Destructuring here.");
+          console.log(post);
+            return articleTemplate(title, lastReply);
         });
 
 console.log(elements);
@@ -16,14 +20,17 @@ console.log(elements);
 };
 
 // We add the post to the DOM here.
-let articleTemplate = `
+function articleTemplate(title, lastReply){
+  let template =`
         <article class="post">
           <h2 class="post-title">
-            In hybrid moments, give me a moment
+            ${title}
           </h2>
           <p class="post-meta">
-            last reply on July 15, 1997
+            last reply on ${lastReply}
           </p>
         </article>`;
+  return template;
+};
 
 export default ui;
