@@ -1,3 +1,6 @@
+// Not using the ./ below because it's an npm module.
+import xss from "xss-filters";
+
 // This is the user interface file. This is where you render stuff to the DOM.
 
 let ui = {
@@ -21,13 +24,16 @@ console.log(elements);
 
 // We add the post to the DOM here.
 function articleTemplate(title, lastReply){
+  // Using xss-filters npm package to stop xss attacks.
+  let safeTitle = xss.inHTMLData(title);
+  let safeLastReply = xss.inHTMLData(lastReply);
   let template =`
         <article class="post">
           <h2 class="post-title">
-            ${title}
+            ${safeTitle}
           </h2>
           <p class="post-meta">
-            last reply on ${lastReply}
+            last reply on ${safeLastReply}
           </p>
         </article>`;
   return template;

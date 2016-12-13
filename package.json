@@ -14,5 +14,8 @@
     "browser-sync": "^2.18.5",
     "gulp": "^3.9.1",
     "gulp-livereload": "^3.8.1"
+  },
+  "dependencies": {
+    "xss-filters": "^1.2.7"
   }
 }
