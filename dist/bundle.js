@@ -1102,36 +1102,16 @@ exports.uriFragmentInHTMLComment = exports.uriComponentInHTMLComment;
 },{}],2:[function(require,module,exports){
 "use strict";
 
-var _post = require("./post");
-
-var _post2 = _interopRequireDefault(_post);
-
-var _ui = require("./ui");
-
-var _ui2 = _interopRequireDefault(_ui);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//Didn't have to type in braces on arrow function in catch.
-// then() and catch() need to have a function to run.
-// This is the entry point file. This is where it all happens, but we don't really want to write code here.
-
-_post2.default.findAll().then(_ui2.default.renderPosts).catch(function (error) {
-    console.log(error);
-});
-
-// Left off on Active Users.
-
-},{"./post":3,"./ui":4}],3:[function(require,module,exports){
-"use strict";
-
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var Post = {
-    findAll: function findAll() {
+
+var _constants = require("./constants");
+
+var API = {
+    fetch: function fetch(path) {
         return new Promise(function (res, rej) {
-            var uri = "http://localhost:3000/posts";
+            var uri = _constants.BASE_URI + "/" + path;
             var request = new XMLHttpRequest();
 
             request.open("GET", uri, true);
@@ -1150,9 +1130,68 @@ var Post = {
     }
 };
 
+exports.default = API;
+
+},{"./constants":4}],3:[function(require,module,exports){
+"use strict";
+
+var _post = require("./post");
+
+var _post2 = _interopRequireDefault(_post);
+
+var _user = require("./user");
+
+var _user2 = _interopRequireDefault(_user);
+
+var _ui = require("./ui");
+
+var _ui2 = _interopRequireDefault(_ui);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//Didn't have to type in braces on arrow function in catch.
+// then() and catch() need to have a function to run.
+_post2.default.findAll().then(_ui2.default.renderPosts).catch(function (error) {
+    console.log(error);
+}); // This is the entry point file. This is where it all happens, but we don't really want to write code here.
+
+_user2.default.findRecent().then(_ui2.default.renderUsers).catch(function (error) {
+    console.log(error);
+});
+// Left off on Active Users.
+
+},{"./post":5,"./ui":6,"./user":7}],4:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var BASE_URI = "http://localhost:3000";
+
+exports.BASE_URI = BASE_URI;
+
+},{}],5:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _api = require("./api");
+
+var _api2 = _interopRequireDefault(_api);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Post = {
+    findAll: function findAll() {
+        return _api2.default.fetch("posts");
+    }
+};
+
 exports.default = Post;
 
-},{}],4:[function(require,module,exports){
+},{"./api":2}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1184,6 +1223,20 @@ var ui = {
     // Finds the target, then adds the elements.
     var target = document.querySelector(".container");
     target.innerHTML = elements.join("");
+  },
+  renderUsers: function renderUsers(users) {
+    console.log(users);
+    var elements = users.map(function (user) {
+      var name = user.name,
+          avatar = user.avatar;
+
+      console.log("Destructuring here.");
+      console.log(user);
+      return userTemplate(name, avatar);
+    });
+
+    var target = document.querySelector(".sidebar-content");
+    target.innerHTML = elements.join("");
   }
 };
 
@@ -1195,8 +1248,38 @@ function articleTemplate(title, lastReply) {
   var safeLastReply = _xssFilters2.default.inHTMLData(lastReply);
   var template = "\n        <article class=\"post\">\n          <h2 class=\"post-title\">\n            " + safeTitle + "\n          </h2>\n          <p class=\"post-meta\">\n            last reply on " + safeLastReply + "\n          </p>\n        </article>";
   return template;
-};
+}
+
+function userTemplate(name, avatar) {
+  // Using xss-filters to stop xss attacks.
+  var safeName = _xssFilters2.default.inHTMLData(name);
+  var safeAvatar = _xssFilters2.default.inHTMLData(avatar);
+
+  var template = "\n  <div class=\"active-avatar\">\n    <img width=\"54\" src=\"" + avatar + "\">\n    <h5 class=\"post-author\">" + name + "</h5>\n  </div>\n  ";
+  return template;
+}
 
 exports.default = ui;
 
-},{"xss-filters":1}]},{},[2]);
+},{"xss-filters":1}],7:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _api = require("./api");
+
+var _api2 = _interopRequireDefault(_api);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var User = {
+    findRecent: function findRecent() {
+        return _api2.default.fetch("activeUsers");
+    }
+};
+
+exports.default = User;
+
+},{"./api":2}]},{},[3]);

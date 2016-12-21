@@ -19,6 +19,19 @@ console.log(elements);
         // Finds the target, then adds the elements.
         let target = document.querySelector(".container");
         target.innerHTML = elements.join("");
+    },
+
+    renderUsers(users){
+      console.log(users)
+      let elements = users.map( (user) => {
+        let { name, avatar } = user;
+        console.log("Destructuring here.");
+        console.log(user);
+          return userTemplate(name, avatar);
+      });
+
+      let target = document.querySelector(".sidebar-content");
+      target.innerHTML = elements.join("");
     }
 };
 
@@ -37,6 +50,20 @@ function articleTemplate(title, lastReply){
           </p>
         </article>`;
   return template;
-};
+}
+
+function userTemplate(name, avatar){
+  // Using xss-filters to stop xss attacks.
+  let safeName = xss.inHTMLData(name);
+  let safeAvatar = xss.inHTMLData(avatar);
+
+  let template = `
+  <div class="active-avatar">
+    <img width="54" src="${avatar}">
+    <h5 class="post-author">${name}</h5>
+  </div>
+  `;
+    return template;
+}
 
 export default ui;

@@ -15,5 +15,19 @@
       "title": "When I'm out walkin', I strut my stuff",
       "lastReply": "1983-04-19"
     }
+  ],
+  "activeUsers": [
+    {
+      "name": "Sam",
+      "avatar": "assets/images/avatar.jpg"
+    },
+    {
+      "name": "Tyler",
+      "avatar": "assets/images/avatar.jpg"
+    },
+    {
+      "name": "Brook",
+      "avatar": "assets/images/avatar.jpg"
+    }
   ]
 }
